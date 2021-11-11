@@ -19,11 +19,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _message = "";
   final telephony = Telephony.instance;
+  final controller = TextEditingController();
 
   @override
   void initState() {
     
     super.initState();
+    
     initPlatformState();
   }
 
@@ -32,6 +34,7 @@ class _MyAppState extends State<MyApp> {
     print(message);
     setState(() {
       _message = message.body ?? "Error reading message body.";
+      controller.text = _message;
     });
   }
 
@@ -72,6 +75,11 @@ class _MyAppState extends State<MyApp> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(child: Text("Latest received SMS: $_message")),
+          TextField(
+            controller: controller,
+            autofocus: true,
+          ),
+
           TextButton(
               onPressed: () async {
                 await telephony.openDialer("123413453");
